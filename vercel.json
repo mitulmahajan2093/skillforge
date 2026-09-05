@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "/blog", "destination": "https://YOUR-BLOG-DEPLOYMENT.vercel.app/blog" },
+    { "source": "/blog/:path*", "destination": "https://YOUR-BLOG-DEPLOYMENT.vercel.app/blog/:path*" }
+  ]
+}

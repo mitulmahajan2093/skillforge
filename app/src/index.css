@@ -1,0 +1,116 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------- */
+/* SkillForge design tokens — "forge" theme: steel + ember           */
+/* ---------------------------------------------------------------- */
+@theme {
+  --font-display: "Space Grotesk", "Inter", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  --color-ink-950: #0b0d12;
+  --color-ink-900: #12151c;
+  --color-ink-800: #1a1f29;
+  --color-ink-700: #1e2430;
+  --color-ink-600: #2a3140;
+  --color-ink-500: #3a4356;
+  --color-slate-400: #8891a3;
+  --color-slate-300: #aab1bf;
+  --color-mist-100: #e7eaf0;
+  --color-mist-50: #f5f6f9;
+
+  --color-ember-600: #d9481b;
+  --color-ember-500: #ff6b35;
+  --color-ember-400: #ff8b5e;
+  --color-spark-500: #ffb627;
+  --color-spark-400: #ffc85c;
+
+  --color-success-500: #37b874;
+  --color-danger-500: #e5484d;
+
+  --shadow-ember: 0 0 0 1px rgba(255, 107, 53, 0.25), 0 8px 24px -8px rgba(255, 107, 53, 0.35);
+}
+
+:root {
+  color-scheme: dark light;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  background: var(--color-ink-900);
+  color: var(--color-mist-100);
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+/* ------------------------------------------------------------------ */
+/* Theme token overrides.                                              */
+/* Tailwind v4 compiles utilities to reference these custom properties */
+/* directly (e.g. `.bg-ink-800 { background-color: var(--color-ink-800) }`), */
+/* so redefining them here re-themes every component that uses the     */
+/* ink/mist/slate scale — cards, panels, borders, inputs, text — with  */
+/* no per-component classes needed. Previously only `body`'s own       */
+/* background/color were swapped, which left panels (bg-ink-800) with  */
+/* inherited dark text on top of a still-dark panel in light mode,     */
+/* making headings and filter-bar inputs unreadable.                   */
+.light {
+  --color-ink-950: #eef0f4;
+  --color-ink-900: #f5f6f9;
+  --color-ink-800: #ffffff;
+  --color-ink-700: #e2e5ec;
+  --color-ink-600: #cbd0db;
+  --color-ink-500: #b7bdc9;
+  --color-slate-400: #5b6472;
+  --color-slate-300: #414954;
+  --color-mist-100: #12151c;
+  --color-mist-50: #0b0d12;
+}
+
+.dark {
+  color-scheme: dark;
+}
+.light {
+  color-scheme: light;
+}
+
+/* Signature element: the "progress seam" — a stitched ember gradient
+   line used on progress bars and section dividers throughout the app. */
+.forge-seam {
+  background: linear-gradient(90deg, var(--color-ember-500) 0%, var(--color-spark-500) 100%);
+}
+
+.forge-seam-track {
+  background-image: repeating-linear-gradient(
+    90deg,
+    currentColor 0 6px,
+    transparent 6px 12px
+  );
+  opacity: 0.15;
+}
+
+/* Focus visibility (never removed) */
+:focus-visible {
+  outline: 2px solid var(--color-ember-500);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Scrollbar (webkit) — subtle, in-theme */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--color-ink-600);
+  border-radius: 999px;
+}

@@ -1,0 +1,16 @@
+{
+  "name": "skillforge",
+  "private": true,
+  "version": "1.0.0",
+  "description": "SkillForge — main React/Vite app + Next.js blog, served as one platform.",
+  "scripts": {
+    "install:all": "npm install --prefix app && npm install --prefix blog",
+    "dev": "concurrently -n app,blog -c blue,magenta \"npm run dev --prefix app\" \"npm run dev --prefix blog\"",
+    "build": "npm run build --prefix app && npm run build --prefix blog",
+    "preview:app": "npm run preview --prefix app",
+    "start:blog": "npm run start --prefix blog"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}

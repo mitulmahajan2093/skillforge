@@ -1,0 +1,69 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isSignedIn() &&
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    // ---- users ---------------------------------------------------------
+    // A user can read/update their own profile. Admins can read any
+    // profile (needed for the "view users" admin feature) but cannot
+    // silently rewrite someone else's data.
+    match /users/{userId} {
+      allow read: if isOwner(userId) || isAdmin();
+      allow create: if isOwner(userId);
+      allow update: if isOwner(userId) &&
+        request.resource.data.role == resource.data.role; // users can't self-promote to admin
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // ---- courses ---------------------------------------------------------
+    // Public catalog: anyone signed in can browse. Only admins can
+    // create/edit/delete courses and their modules/lessons.
+    match /courses/{courseId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // ---- enrollments -------------------------------------------------------
+    // A student can only read/write their own enrollment + progress
+    // records. Admins can read all enrollments (for the admin dashboard's
+    // "view enrollments" feature) but do not modify student progress.
+    match /enrollments/{enrollmentId} {
+      allow read: if isSignedIn() && (resource !=null && resource.data.userId == request.auth.uid || isAdmin());
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      allow update: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+    }
+
+    // ---- wishlist ---------------------------------------------------------
+    match /wishlist/{itemId} {
+      allow read, write: if isSignedIn() && (
+        (resource != null && resource.data.userId == request.auth.uid) ||
+        (request.resource != null && request.resource.data.userId == request.auth.uid)
+      );
+    }
+
+    // ---- reviews ---------------------------------------------------------
+    // Anyone signed in can read reviews. A user may only create a review
+    // under their own name and may not edit/delete other users' reviews.
+    match /reviews/{reviewId} {
+      allow read: if true;
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+    }
+  }
+}

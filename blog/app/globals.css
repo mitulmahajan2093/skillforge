@@ -1,0 +1,88 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Space Grotesk", "Inter", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  --color-ink-950: #0b0d12;
+  --color-ink-900: #12151c;
+  --color-ink-800: #1a1f29;
+  --color-ink-700: #1e2430;
+  --color-ink-600: #2a3140;
+  --color-ink-500: #3a4356;
+  --color-slate-400: #8891a3;
+  --color-mist-100: #e7eaf0;
+
+  --color-ember-600: #d9481b;
+  --color-ember-500: #ff6b35;
+  --color-ember-400: #ff8b5e;
+  --color-spark-500: #ffb627;
+
+  --shadow-ember: 0 0 0 1px rgba(255, 107, 53, 0.25), 0 8px 24px -8px rgba(255, 107, 53, 0.35);
+}
+
+body {
+  background: var(--color-ink-900);
+  color: var(--color-mist-100);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+.forge-seam {
+  background: linear-gradient(90deg, var(--color-ember-500) 0%, var(--color-spark-500) 100%);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-ember-500);
+  outline-offset: 2px;
+}
+
+.prose-forge {
+  max-width: 68ch;
+}
+.prose-forge h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.4rem;
+  margin-top: 2.2em;
+  margin-bottom: 0.6em;
+}
+.prose-forge h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.15rem;
+  margin-top: 1.8em;
+  margin-bottom: 0.5em;
+}
+.prose-forge p {
+  color: var(--color-slate-400);
+  line-height: 1.75;
+  margin-bottom: 1.2em;
+}
+.prose-forge ul {
+  color: var(--color-slate-400);
+  list-style: disc;
+  padding-left: 1.4em;
+  margin-bottom: 1.2em;
+}
+.prose-forge li {
+  margin-bottom: 0.4em;
+}
+.prose-forge strong {
+  color: var(--color-mist-100);
+}
+.prose-forge code {
+  font-family: var(--font-mono);
+  background: var(--color-ink-800);
+  padding: 0.15em 0.4em;
+  border-radius: 0.3em;
+  font-size: 0.85em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
