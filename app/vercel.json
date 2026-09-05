@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "/blog", "destination": "https://blog-ruby-seven-10.vercel.app/blog" },
+    { "source": "/blog/:path*", "destination": "https://blog-ruby-seven-10.vercel.app/blog/:path*" }
+  ]
+}
