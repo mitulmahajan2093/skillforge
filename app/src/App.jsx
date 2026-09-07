@@ -3,7 +3,11 @@ import { Toaster } from "react-hot-toast";
 import { AuthProvider } from "./context/AuthContext";
 import { ThemeProvider } from "./context/ThemeContext";
 import Layout from "./components/Layout";
-import { ProtectedRoute, AdminRoute } from "./components/ProtectedRoute";
+import {
+  ProtectedRoute,
+  AdminRoute,
+  StudentOnlyRoute,
+} from "./components/ProtectedRoute";
 
 import Home from "./pages/Home";
 import Courses from "./pages/Courses";
@@ -37,20 +41,91 @@ export default function App() {
           />
           <Routes>
             <Route element={<Layout />}>
-              <Route path="/" element={<Home />} />
-              <Route path="/courses" element={<Courses />} />
-              <Route path="/courses/:id" element={<CourseDetails />} />
+              <Route
+                path="/"
+                element={
+                  <StudentOnlyRoute>
+                    <Home />
+                  </StudentOnlyRoute>
+                }
+              />
+              <Route
+                path="/courses"
+                element={
+                  <StudentOnlyRoute>
+                    <Courses />
+                  </StudentOnlyRoute>
+                }
+              />
+              <Route
+                path="/courses/:id"
+                element={
+                  <StudentOnlyRoute>
+                    <CourseDetails />
+                  </StudentOnlyRoute>
+                }
+              />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
 
-              <Route path="/dashboard" element={<ProtectedRoute><StudentDashboard /></ProtectedRoute>} />
-              <Route path="/my-courses" element={<ProtectedRoute><MyCourses /></ProtectedRoute>} />
-              <Route path="/learn/:id" element={<ProtectedRoute><LearningPage /></ProtectedRoute>} />
-              <Route path="/wishlist" element={<ProtectedRoute><Wishlist /></ProtectedRoute>} />
-              <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+              <Route
+                path="/dashboard"
+                element={
+                  <ProtectedRoute>
+                    <StudentOnlyRoute>
+                      <StudentDashboard />
+                    </StudentOnlyRoute>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/my-courses"
+                element={
+                  <ProtectedRoute>
+                    <StudentOnlyRoute>
+                      <MyCourses />
+                    </StudentOnlyRoute>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/learn/:id"
+                element={
+                  <ProtectedRoute>
+                    <StudentOnlyRoute>
+                      <LearningPage />
+                    </StudentOnlyRoute>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/wishlist"
+                element={
+                  <ProtectedRoute>
+                    <StudentOnlyRoute>
+                      <Wishlist />
+                    </StudentOnlyRoute>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute>
+                    <Profile />
+                  </ProtectedRoute>
+                }
+              />
 
-              <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+              <Route
+                path="/admin"
+                element={
+                  <AdminRoute>
+                    <AdminDashboard />
+                  </AdminRoute>
+                }
+              />
 
               <Route path="*" element={<NotFound />} />
             </Route>

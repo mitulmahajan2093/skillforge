@@ -7,7 +7,8 @@ export function ProtectedRoute({ children }) {
   const location = useLocation();
 
   if (loading) return <LoadingSpinner full label="Checking your session…" />;
-  if (!isAuthenticated) return <Navigate to="/login" replace state={{ from: location }} />;
+  if (!isAuthenticated)
+    return <Navigate to="/login" replace state={{ from: location }} />;
   return children;
 }
 
@@ -16,7 +17,16 @@ export function AdminRoute({ children }) {
   const location = useLocation();
 
   if (loading) return <LoadingSpinner full label="Checking your session…" />;
-  if (!isAuthenticated) return <Navigate to="/login" replace state={{ from: location }} />;
+  if (!isAuthenticated)
+    return <Navigate to="/login" replace state={{ from: location }} />;
   if (!isAdmin) return <Navigate to="/dashboard" replace />;
+  return children;
+}
+
+export function StudentOnlyRoute({ children }) {
+  const { isAdmin, loading } = useAuth();
+
+  if (loading) return <LoadingSpinner full label="Checking your session…" />;
+  if (isAdmin) return <Navigate to="/admin" replace />;
   return children;
 }

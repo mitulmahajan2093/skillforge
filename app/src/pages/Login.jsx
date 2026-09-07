@@ -5,6 +5,7 @@ import AuthCard from "../components/AuthCard";
 import FormField from "../components/FormField";
 import { useAuth } from "../hooks/useAuth";
 import { validateEmail } from "../utils/validation";
+import { isFirebaseConfigured } from "../firebase/config";
 
 export default function Login() {
   const { login } = useAuth();
@@ -36,9 +37,11 @@ export default function Login() {
     if (!validate()) return;
     setSubmitting(true);
     try {
-      await login(form);
+      const loggedInUser = await login(form);
       toast.success("Welcome back!");
-      navigate(from, { replace: true });
+      navigate(loggedInUser.role === "admin" ? "/admin" : from, {
+        replace: true,
+      });
     } catch (err) {
       setFormError(err.message || "Couldn't log in. Check your credentials.");
     } finally {
@@ -53,7 +56,12 @@ export default function Login() {
       footer={
         <>
           Don't have an account?{" "}
-          <Link to="/register" className="font-medium text-ember-500 hover:underline">Sign up</Link>
+          <Link
+            to="/register"
+            className="font-medium text-ember-500 hover:underline"
+          >
+            Sign up
+          </Link>
         </>
       }
     >
@@ -79,11 +87,16 @@ export default function Login() {
           error={errors.password}
         />
         <div className="flex justify-end">
-          <Link to="/forgot-password" className="text-xs font-medium text-slate-400 hover:text-ember-500">
+          <Link
+            to="/forgot-password"
+            className="text-xs font-medium text-slate-400 hover:text-ember-500"
+          >
             Forgot password?
           </Link>
         </div>
-        {formError ? <p className="text-sm text-danger-500">{formError}</p> : null}
+        {formError ? (
+          <p className="text-sm text-danger-500">{formError}</p>
+        ) : null}
         <button
           type="submit"
           disabled={submitting}
@@ -92,9 +105,11 @@ export default function Login() {
           {submitting ? "Logging in…" : "Log in"}
         </button>
       </form>
-      <p className="mt-6 rounded-lg border border-ink-700 bg-ink-800 p-3 font-mono text-xs text-slate-400">
-        Demo admin: admin@skillforge.dev / admin123
-      </p>
+      {!isFirebaseConfigured && (
+        <p className="mt-6 rounded-lg border border-ink-700 bg-ink-800 p-3 font-mono text-xs text-slate-400">
+          Admin: admin@skillforge.dev / admin123
+        </p>
+      )}
     </AuthCard>
   );
 }
