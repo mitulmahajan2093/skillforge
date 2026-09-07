@@ -148,8 +148,6 @@ export default function Login() {
     Click the email or password to automatically fill the login form.
   </p>
 </div>
-
-      )
     </AuthCard>
   );
 }
