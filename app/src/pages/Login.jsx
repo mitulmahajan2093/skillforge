@@ -5,7 +5,6 @@ import AuthCard from "../components/AuthCard";
 import FormField from "../components/FormField";
 import { useAuth } from "../hooks/useAuth";
 import { validateEmail } from "../utils/validation";
-import { isFirebaseConfigured } from "../firebase/config";
 
 export default function Login() {
   const { login } = useAuth();
@@ -105,11 +104,52 @@ export default function Login() {
           {submitting ? "Logging in…" : "Log in"}
         </button>
       </form>
-      {!isFirebaseConfigured && (
-        <p className="mt-6 rounded-lg border border-ink-700 bg-ink-800 p-3 font-mono text-xs text-slate-400">
-          Admin: admin@skillforge.dev / admin123
-        </p>
-      )}
+
+      <div className="mt-6 rounded-xl border border-amber-500/30 bg-amber-500/5 p-4">
+  <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-amber-400">
+    Admin Account
+  </p>
+
+  <div className="space-y-2 text-xs">
+    <button
+      type="button"
+      onClick={() =>
+        setForm((f) => ({
+          ...f,
+          email: "admin@skillforge.dev",
+        }))
+      }
+      className="block w-full rounded-md bg-ink-800 px-3 py-2 text-left font-mono text-slate-300 transition hover:bg-ink-700"
+    >
+      Email:{" "}
+      <span className="font-semibold text-white">
+        admin@skillforge.dev
+      </span>
+    </button>
+
+    <button
+      type="button"
+      onClick={() =>
+        setForm((f) => ({
+          ...f,
+          password: "admin123",
+        }))
+      }
+      className="block w-full rounded-md bg-ink-800 px-3 py-2 text-left font-mono text-slate-300 transition hover:bg-ink-700"
+    >
+      Password:{" "}
+      <span className="font-semibold text-white">
+        admin123
+      </span>
+    </button>
+  </div>
+
+  <p className="mt-3 text-xs text-slate-500">
+    Click the email or password to automatically fill the login form.
+  </p>
+</div>
+
+      )
     </AuthCard>
   );
 }
